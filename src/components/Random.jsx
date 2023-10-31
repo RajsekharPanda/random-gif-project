@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const API_KEY = import.meta.env.REACT_APP_GIPHY_API_KEY;
+const API_KEY = import.meta.env.VITE_APP_GIPHY_API_KEY;
+console.log(API_KEY)
 
 const Random = () => {
 
@@ -9,13 +10,19 @@ const Random = () => {
     
     async function fetchData () {
         const url=`https://api.giphy.com/v1/gifs/random?api_key=${API_KEY}`;
-        const output = await axios.get(url);
-        console.log(output);
+        const {data} = await axios.get(url);
+        const imageSource = data.data.images.downsized_medium.url;
+        console.log(data);
+        setGif(imageSource);
     }
+
+    useEffect(() => {
+        fetchData();
+    },[])
 
     function clickHandler () {
-
-    }
+        fetchData();
+    }   
 
     return(
         <div className="w-1/2 h-[500px] bg-green-500 rounded-lg border border-black flex flex-col items-center gap-y-5 mt-[15px]">
