@@ -1,28 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Spinner from "./Spinner";
+import useGif from "../hooks/useGif";
 
 const API_KEY = import.meta.env.VITE_APP_GIPHY_API_KEY;
 console.log(API_KEY)
 
 const Random = () => {
 
-    const [gif, setGif] = useState('');
-    const [loading, setLoading] = useState('false');
-    
-    async function fetchData () {
-        setLoading(true);
-        const url=`https://api.giphy.com/v1/gifs/random?api_key=${API_KEY}`;
-        const {data} = await axios.get(url);
-        const imageSource = data.data.images.downsized_large.url;
-        console.log(data);
-        setGif(imageSource);
-        setLoading(false)
-    }
-
-    useEffect(() => {
-        fetchData();
-    },[])
+    const {gif, loading, fetchData} = useGif();
 
     function clickHandler () {
         fetchData();
@@ -38,7 +24,7 @@ const Random = () => {
 
             
             <button 
-            onClick={clickHandler}
+            onClick={() => fetchData()}
             className="bg-[#fdf4ff] mb-[20px] w-10/12 text-lg py-1 rounded-lg "
             >Generate</button>
         </div>
